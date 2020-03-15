@@ -64,18 +64,11 @@ Here are my favorite recipies:
 <li> <a href="http://udacity.com/cs101x/urank/arsenic.html">World's Best Hummus</a>
 <li> <a href="http://udacity.com/cs101x/urank/kathleen.html">Kathleen's Hummus Recipe</a>
 </ul>
-
 For more expert opinions, check out the
 <a href="http://udacity.com/cs101x/urank/nickel.html">Nickel Chef</a>
 and <a href="http://udacity.com/cs101x/urank/zinc.html">Zinc Chef</a>.
 </body>
 </html>
-
-
-
-
-
-
 """,
    'http://udacity.com/cs101x/urank/zinc.html': """<html>
 <body>
@@ -87,15 +80,8 @@ I learned everything I know from
 <p>
 For great hummus, try
 <a href="http://udacity.com/cs101x/urank/arsenic.html">this recipe</a>.
-
 </body>
 </html>
-
-
-
-
-
-
 """,
    'http://udacity.com/cs101x/urank/nickel.html': """<html>
 <body>
@@ -105,15 +91,8 @@ This is the
 <a href="http://udacity.com/cs101x/urank/kathleen.html">
 best Hummus recipe!
 </a>
-
 </body>
 </html>
-
-
-
-
-
-
 """,
    'http://udacity.com/cs101x/urank/kathleen.html': """<html>
 <body>
@@ -121,7 +100,6 @@ best Hummus recipe!
 Kathleen's Hummus Recipe
 </h1>
 <p>
-
 <ol>
 <li> Open a can of garbonzo beans.
 <li> Crush them in a blender.
@@ -129,10 +107,8 @@ Kathleen's Hummus Recipe
 <li> Squeeze in one lemon.
 <li> Add salt, pepper, and buttercream frosting to taste.
 </ol>
-
 </body>
 </html>
-
 """,
    'http://udacity.com/cs101x/urank/arsenic.html': """<html>
 <body>
@@ -140,15 +116,12 @@ Kathleen's Hummus Recipe
 The Arsenic Chef's World Famous Hummus Recipe
 </h1>
 <p>
-
 <ol>
 <li> Kidnap the <a href="http://udacity.com/cs101x/urank/nickel.html">Nickel Chef</a>.
 <li> Force her to make hummus for you.
 </ol>
-
 </body>
 </html>
-
 """,
    'http://udacity.com/cs101x/urank/hummus.html': """<html>
 <body>
@@ -156,25 +129,43 @@ The Arsenic Chef's World Famous Hummus Recipe
 Hummus Recipe
 </h1>
 <p>
-
 <ol>
 <li> Go to the store and buy a container of hummus.
 <li> Open it.
 </ol>
-
 </body>
 </html>
-
-
-
-
 """,
 }
 
+def remove_tags(s):
+    checker = True
+    result = []
+    word = ""
+    for e in s:
+        if e == '<':
+            if word:
+                result = result + word.split()
+                word = ""
+            checker = False
+        if checker:
+            word = word + e
+        if e == '>':
+            checker = True
+    if word:
+        result = result + word.split()
+    return result
+
 def get_page(url):
-    if url in cache:
-        return cache[url]
-    return ""
+  try:
+    import urllib.request 
+    with urllib.request.urlopen(url) as response:
+      bb = response.read()
+      cc = bb.decode("utf-8")
+      return cc
+  except:
+    return "" 
+
 
 
 def get_next_target(page):
@@ -233,33 +224,15 @@ def lookup(index, keyword):
 # You may assume the input does not include any unclosed tags, that is,  
 # there will be no '<' without a following '>'.
 
-def remove_tags(s):
-    checker = True
-    result = []
-    word = ""
-    for e in s:
-        if e == '<':
-            if word:
-                result = result + word.split()
-                word = ""
-            checker = False
-        if checker:
-            word = word + e
-        if e == '>':
-            checker = True
-    if word:
-        result = result + word.split()
-    return result
 
 
 
-#print remove_tags('''<h1>Title</h1><p>This is a
-                    <a href="http://www.udacity.com">link</a>.<p>''')
+#print (remove_tags('''<h1>Title</h1><p>This is a
+#                    <a href="http://www.udacity.com">link</a>.<p>'''))
 #>>> ['Title','This','is','a','link','.']
-
-#print remove_tags('''<table cellpadding='3'>
-                     <tr><td>Hello</td><td>World!</td></tr>
-                     </table>''')
+#print (remove_tags('''<table cellpadding='3'>
+#                     <tr><td>Hello</td><td>World!</td></tr>
+#                     </table>'''))
 #>>> ['Hello','World!']
 
 #print remove_tags("<hello><goodbye>")
@@ -315,7 +288,7 @@ def compute_ranks(graph):
 # Note: the intent of this question is for students to write their own sorting
 # code, not to use the built-in sort procedure.
 
-index, graph = crawl_web('http://udacity.com/cs101x/urank/index.html')
+index, graph = crawl_web('http://Ayoub150.github.io/python-repo/crawl/index.html')
 ranks = compute_ranks(graph)
 
 print (ordered_search(index, ranks, 'Hummus'))
@@ -325,7 +298,7 @@ print (ordered_search(index, ranks, 'Hummus'))
 #    'http://udacity.com/cs101x/urank/hummus.html',
 #    'http://udacity.com/cs101x/urank/index.html']
 
-print (ordered_search(index, ranks, 'the'))
+print (ordered_search(index, ranks, '<html>'))
 #>>> ['http://udacity.com/cs101x/urank/nickel.html',
 #    'http://udacity.com/cs101x/urank/arsenic.html',
 #    'http://udacity.com/cs101x/urank/hummus.html',
@@ -334,4 +307,5 @@ print (ordered_search(index, ranks, 'the'))
 
 print (ordered_search(index, ranks, 'babaganoush'))
 #>>> None
+print (index)
 
