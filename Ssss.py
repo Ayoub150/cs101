@@ -1,5 +1,4 @@
 
-Only a Little Lucky
 
 # Triple Gold Star
 
