@@ -27,6 +27,7 @@ def compute_ranks(graph):
 
 
 cache = {
+    'abc.com': '<hhh> axmed maxamuud <hhh>', 
    'http://udacity.com/cs101x/urank/index.html': """<html>
 <body>
 <h1>Dave's Cooking Algorithms</h1>
@@ -169,7 +170,7 @@ def remove_tags(s):
     
 
 def crawl_web(seed): # returns index, graph of inlinks
-    tocrawl = [seed]
+    tocrawl = seed
     crawled = []
     graph = {}  # <url>, [list of pages it links to]
     index = {} 
@@ -193,7 +194,7 @@ def get_page(url):
     if url in cache:
         return cache[url]
     else:
-        return None
+        return ""
     
 def get_next_target(page):
     start_link = page.find('<a href=')
@@ -229,7 +230,7 @@ def add_page_to_index(index, url, content):
 def add_to_index(index, keyword, url):
     if keyword in index:
         index[keyword].append(url)
-    else:
+    elif len(index) < 10000:
         index[keyword] = [url]
 
 def lookup(index, keyword):
@@ -238,7 +239,8 @@ def lookup(index, keyword):
     else:
         return None
 
-index, graph = crawl_web('http://udacity.com/cs101x/urank/index.html')
+seeds = [ 'abc.com', 'def.com', 'http://udacity.com/cs101x/urank/index.html']
+index, graph = crawl_web(seeds) #'http://udacity.com/cs101x/urank/index.html')
 ranks = compute_ranks(graph)
 #print ranks
 
@@ -249,4 +251,4 @@ ranks = compute_ranks(graph)
 #'http://udacity.com/cs101x/urank/index.html': 0.033333333333333326,
 #'http://udacity.com/cs101x/urank/nickel.html': 0.09743999999999997}
 
-print len ( index)
+print len(index)
