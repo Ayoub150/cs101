@@ -147,7 +147,7 @@ Hummus Recipe
 
 def split_string(s):
     output = []
-    splitlist = " .,/\n()'!+*%?$#@"
+    splitlist = " .,/\n()'!+*%?$#@;:&[]{}|="
     atsplit = True
     for e in s:
         if e in splitlist:
